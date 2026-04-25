@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: my-apps
+  namespace: argocd
+spec:
+  # Mỗi folder trong apps/ = 1 Application được tự tạo
+  generators:
+    - git:
+        repoURL: https://github.com/YOUR_USERNAME/argocd-sample.git
+        revision: HEAD
+        directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/YOUR_USERNAME/argocd-sample.git
+        targetRevision: HEAD
+        path: '{{path}}'
+        helm:
+          valueFiles:
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true       # xóa resource khi xóa folder
+          selfHeal: true    # tự fix nếu ai sửa trực tiếp trên cluster
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true

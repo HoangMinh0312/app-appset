@@ -1,0 +1,27 @@
+replicaCount: 2
+
+image:
+  # Đổi thành image của bạn sau khi build & push
+  repository: ghcr.io/YOUR_USERNAME/hello-world
+  tag: "latest"
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: false
+  host: hello-world.local
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+env:
+  APP_NAME: hello-world
