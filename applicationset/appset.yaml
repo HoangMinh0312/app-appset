@@ -7,7 +7,7 @@ spec:
   # Mỗi folder trong apps/ = 1 Application được tự tạo
   generators:
     - git:
-        repoURL: https://github.com/YOUR_USERNAME/argocd-sample.git
+        repoURL: https://github.com/HoangMinh0312/app-appset.git
         revision: HEAD
         directories:
           - path: apps/*
@@ -17,7 +17,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/YOUR_USERNAME/argocd-sample.git
+        repoURL: https://github.com/HoangMinh0312/app-appset.git
         targetRevision: HEAD
         path: '{{path}}'
         helm:
