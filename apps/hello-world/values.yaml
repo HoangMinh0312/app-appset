@@ -1,10 +1,9 @@
 replicaCount: 2
 
 image:
-  # Đổi thành image của bạn sau khi build & push
-  repository: ghcr.io/YOUR_USERNAME/hello-world
+  repository: hashicorp/http-echo
   tag: "latest"
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP

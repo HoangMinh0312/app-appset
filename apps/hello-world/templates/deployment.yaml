@@ -18,24 +18,27 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-listen=:{{ .Values.service.targetPort }}"
+            - "-text=Hello from {{ .Values.env.APP_NAME }}!"
           ports:
             - containerPort: {{ .Values.service.targetPort }}
-          env:
-            - name: PORT
-              value: "{{ .Values.service.targetPort }}"
-            - name: APP_NAME
-              value: {{ .Values.env.APP_NAME }}
           livenessProbe:
             httpGet:
-              path: /health
+              path: /
               port: {{ .Values.service.targetPort }}
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /health
+              path: /
               port: {{ .Values.service.targetPort }}
             initialDelaySeconds: 3
             periodSeconds: 5
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
